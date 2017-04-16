@@ -120,7 +120,7 @@ class Effect(object):
             hyperion.setColor(self._leds_data)
 
 
-    def mag_to_idx(self, magnitude, maximum=self.height):
+    def mag_to_idx(self, magnitude, maximum):
         # Magnitude is 0-100, get index according to min and max
         idx = int(((magnitude-self.level_min) / (self.level_max - self.level_min)) * maximum)
         return idx
@@ -156,10 +156,10 @@ class Effect(object):
 
         # Length of magnitudes array equals number of bands
 
-        left = self.mag_to_idx(self._magnitudes[0])
-        left_peak = self.mag_to_idx(self._magnitudes[1])
-        right = self.mag_to_idx(self._magnitudes[2])
-        right_peak = self.mag_to_idx(self._magnitudes[3])
+        left = self.mag_to_idx(self._magnitudes[0], self.height)
+        left_peak = self.mag_to_idx(self._magnitudes[1], self.height)
+        right = self.mag_to_idx(self._magnitudes[2], self.height)
+        right_peak = self.mag_to_idx(self._magnitudes[3], self.height)
 
         top_left = self.width/2 - self.mag_to_idx(self._magnitudes[0], self.width/2)
         top_left_peak = self.width/2 - self.mag_to_idx(self._magnitudes[1], self.width/2)
