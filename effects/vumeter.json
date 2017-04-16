@@ -3,8 +3,8 @@
     "script" : "vumeter.py",
     "args" :
     {
-        "color-start": "#00FF00",
-        "color-end": "#FF0000",
+        "color-start": "#E80954",
+        "color-end": "#A515C2",
         "level-min": 90,
         "level-max": 100,
         "left-start": null,
