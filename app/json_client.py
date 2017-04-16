@@ -8,6 +8,7 @@ Created on 27.11.2014, last updated on 02.02.2015
 """
 
 import socket
+import json
 
 class JsonClient(object):
 
@@ -58,7 +59,7 @@ class JsonClient(object):
         message = { "command": "transform", "transform": { "valueGain": min(2, gain) }}
         
         try:
-            self.socket.send(message)
+            self.socket.send(json.dumps(message) + '\n')
         except socket.error, exc:
             print "Error while sending gain\nMessage: ", exc
             # Recreate the socket
