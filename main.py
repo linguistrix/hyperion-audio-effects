@@ -72,6 +72,10 @@ def create_parser(config):
         help="use matrix instead of TV setup",
         action="store_true",
         default=config['matrix'])
+    parser.add_argument("--send_gain",
+        help="send only gain instead of led data",
+        action="store_true",
+        default=False)
     return parser
 
 def run_effect(effect='effect'):
@@ -203,13 +207,16 @@ def read_hyperion_config(file_path):
 
         return (leds, leds_top, leds_right, leds_bottom, leds_left)
 
-def run_json(host, port, interval):
+def run_json(send_gain, host, port, interval):
     from app.json_client import JsonClient
     sleep_time = interval / 1000.0
     json_client = JsonClient(host, port)
     json_client.connect()
     while not hyperion.abort():
-        json_client.send_led_data(hyperion.get_led_data())
+        if not send_gain:
+            json_client.send_led_data(hyperion.get_led_data())
+        else:
+            json_client.send_gain(hyperion.getGain())
         time.sleep(sleep_time)
     json_client.disconnect()
 
@@ -239,6 +246,7 @@ def main():
     if args.json and not args.proto:
         json_thread = Thread(
             target=run_json, kwargs={
+                'send_gain': args.send_gain, 
                 'host': args.host,
                 'port': args.port,
                 'interval': args.interval

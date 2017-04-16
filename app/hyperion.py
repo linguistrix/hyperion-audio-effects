@@ -35,6 +35,8 @@ _imageWidth = 0
 _imageHeight = 0
 _abort = False
 
+gain = 1.0
+
 """ helper functions """
 
 def init(_leds, _leds_top, _leds_right, _leds_bottom, _leds_left):
@@ -117,6 +119,13 @@ def setColor(*args):
         set_color_rgb(args[0], args[1], args[2])
     else:
         raise TypeError('setColor takes 1 or 3 arguments')
+
+def setGain(gain_val):
+    global gain 
+    gain = gain_val
+
+def getGain():
+    return gain
 
 def setImage(width, height, image_data):
     global _imageData
