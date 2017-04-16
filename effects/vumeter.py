@@ -85,7 +85,7 @@ class Effect(object):
         for i in range(0, self.height):
             self.color_map.append(self.get_led_color(i, float(self.height)))
 
-        for i in range(0, self.width/2):
+        for i in range(0, self.width/2+1):
             self.top_color_map.append(self.get_led_color(i, float(self.width/2)))
 
         self._spectrum = GstSpectrumDump(
@@ -192,7 +192,7 @@ class Effect(object):
                 else:
                     self.update_led(top_i, BLACK)
             elif i > self.width/2:
-                if i <= right or i == right_peak:
+                if i <= top_right or i == top_right_peak:
                     self.update_led(top_i, color_i)
                 else:
                     self.update_led(top_i, BLACK)
