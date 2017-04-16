@@ -39,6 +39,7 @@ class Effect(object):
 
         self.leds_left = hyperion.leds_left
         self.leds_right = hyperion.leds_right
+        self.leds_top = hyperion.leds_top
         self.leds_right.reverse()
 
         self._magnitudes = None
@@ -66,15 +67,26 @@ class Effect(object):
         print self.leds_left
         print 'Right leds:'
         print self.leds_right
+        print 'Top leds:'
+        print self.leds_top
 
         self.height = len(self.leds_left)
+        self.width = len(self.leds_top)
+
+        self.update_led(self.width/2, BLACK)
 
         # Helper for color function
         self.height_float = float(self.height)
 
         self.color_map = []
+
+        self.top_color_map = []
+
         for i in range(0, self.height):
-            self.color_map.append(self.get_led_color(i))
+            self.color_map.append(self.get_led_color(i, float(self.height)))
+
+        for i in range(0, self.width/2):
+            self.top_color_map.append(self.get_led_color(i, float(self.width/2)))
 
         self._spectrum = GstSpectrumDump(
             source=hyperion.args.get('audiosrc', 'autoaudiosrc'),
@@ -108,9 +120,9 @@ class Effect(object):
             hyperion.setColor(self._leds_data)
 
 
-    def mag_to_idx(self, magnitude):
+    def mag_to_idx(self, magnitude, maximum=self.height):
         # Magnitude is 0-100, get index according to min and max
-        idx = int(((magnitude-self.level_min) / (self.level_max - self.level_min)) * self.height)
+        idx = int(((magnitude-self.level_min) / (self.level_max - self.level_min)) * maximum)
         return idx
 
 
@@ -118,11 +130,11 @@ class Effect(object):
         self._leds_data[3*i:3*i+3] = color
 
 
-    def get_led_color(self, i):
+    def get_led_color(self, i, maximum):
         # Gradient from start to end
 
-        start_factor = (self.height_float - i) / self.height_float
-        end_factor = i / self.height_float
+        start_factor = (maximum - i) / maximum
+        end_factor = i / maximum
 
         r_s, g_s, b_s = self.color_start
         r_e, g_e, b_e = self.color_end
@@ -149,6 +161,11 @@ class Effect(object):
         right = self.mag_to_idx(self._magnitudes[2])
         right_peak = self.mag_to_idx(self._magnitudes[3])
 
+        top_left = self.width/2 - self.mag_to_idx(self._magnitudes[0], self.width/2)
+        top_left_peak = self.width/2 - self.mag_to_idx(self._magnitudes[1], self.width/2)
+        top_right = self.width/2 + self.mag_to_idx(self._magnitudes[2], self.width/2)
+        top_right_peak = self.width/2 + self.mag_to_idx(self._magnitudes[3], self.width/2)
+
         for i in range(0, self.height):
 
             left_i = self.leds_left[i]
@@ -164,6 +181,21 @@ class Effect(object):
                 self.update_led(right_i, color_i)
             else:
                 self.update_led(right_i, BLACK)
+        
+        for i in range(0, self.width):
+            top_i = self.leds_top[i]
+            color_i = self.top_color_map[abs(i-self.width/2)]
+
+            if i < self.width/2:
+                if i >= top_left or i == top_left_peak:
+                    self.update_led(top_i, color_i)
+                else:
+                    self.update_led(top_i, BLACK)
+            elif i > self.width/2:
+                if i <= right or i == right_peak:
+                    self.update_led(top_i, color_i)
+                else:
+                    self.update_led(top_i, BLACK)
 
         self.processing = False
 
