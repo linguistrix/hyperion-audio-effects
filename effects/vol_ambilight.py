@@ -56,7 +56,7 @@ class Effect(object):
 
     def mag_to_gain(self, magnitude):
         # Magnitude is 0-100, get index according to min and max
-        gain = ((magnitude-self.level_min) / (self.level_max - self.level_min)) * 2.0)
+        gain = ((magnitude-self.level_min) / (self.level_max - self.level_min)) * 2.0
         return gain
 
 def run():
