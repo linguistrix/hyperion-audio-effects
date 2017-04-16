@@ -1,0 +1,9 @@
+{
+    "name" : "Volumetric Ambilight Gain",
+    "script" : "vol_ambilight.py",
+    "args" :
+    {
+        "level-min": 90,
+        "level-max": 100
+    }
+}

@@ -50,6 +50,23 @@ class JsonClient(object):
                 self.connected = False
             except socket.error, exc:
                 print "Could not close socket connection\nMessage: ", exc
+    
+    def send_gain(self, gain):
+        """Send overall luminance gain using JSON"""
+        if not self.connected:
+            return
+        message = { "command": "transform", "transform": { "valueGain": min(2, gain) }}
+        
+        try:
+            self.socket.send(message)
+        except socket.error, exc:
+            print "Error while sending gain\nMessage: ", exc
+            # Recreate the socket
+            self.connected = False
+            print "Reconnecting ..."
+            self.connect()
+            if self.connected:
+                print "Connected."
 
     def send_led_data(self, led_data):
         """
