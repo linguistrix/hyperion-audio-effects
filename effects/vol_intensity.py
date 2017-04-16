@@ -71,8 +71,8 @@ class Effect(object):
 
     def mag_to_gain(self, magnitude):
         # Magnitude is 0-100, get index according to min and max
-        gain = ((magnitude-self.level_min) / (self.level_max - self.level_min)) * 1.0)
-        return gain
+        gain = ((magnitude-self.level_min) / (self.level_max - self.level_min)) * 1.0
+        return max(0.0, gain)
 
 
     def update_led(self, i, color):
@@ -109,7 +109,7 @@ class Effect(object):
         gain = 0.5 * (left + right)
 
         cur_color = self.get_led_color(gain)
-        
+
         for i in range(0, self.ledCount):
             self.update_led(i, cur_color)
 

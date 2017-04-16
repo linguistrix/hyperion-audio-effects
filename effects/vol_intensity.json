@@ -3,7 +3,7 @@
     "script" : "vol_intensity.py",
     "args" :
     {
-        "color": "#A515C2",
+        "color": "#990000",
         "level-min": 90,
         "level-max": 100
     }
