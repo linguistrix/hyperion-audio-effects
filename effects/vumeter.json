@@ -5,7 +5,7 @@
     {
         "color-start": "#E80954",
         "color-end": "#A515C2",
-        "level-min": 90,
+        "level-min": 85,
         "level-max": 100,
         "left-start": null,
         "left-end": null,

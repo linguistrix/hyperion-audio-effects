@@ -50,14 +50,15 @@ class Effect(object):
             return
         else:
             self._magnitudes = magnitudes
-            gain = max(0, self.mag_to_gain(0.5 * (self._magnitudes[0] + self._magnitudes[2])))
-            hyperion.setGain(gain)
+            gain = max(0.3, self.mag_to_gain(0.5 * (self._magnitudes[0] + self._magnitudes[2])))
+            
+	    hyperion.setGain(gain)
 
 
     def mag_to_gain(self, magnitude):
         # Magnitude is 0-100, get index according to min and max
         gain = ((magnitude-self.level_min) / (self.level_max - self.level_min)) * 2.0
-        return gain
+	return gain
 
 def run():
     """ Run this effect until hyperion aborts. """

@@ -3,7 +3,7 @@
     "script" : "vol_ambilight.py",
     "args" :
     {
-        "level-min": 90,
+        "level-min": 80,
         "level-max": 100
     }
 }
